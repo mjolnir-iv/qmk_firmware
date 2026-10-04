@@ -312,10 +312,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * `------------------------------------------------------------------------------------------------'
      */
     [4] = LAYOUT_ortho_4x12(
-        KC_GRV,    KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, LCTL(KC_T),RCS(KC_O),LCTL(KC_P),
-        LCA(KC_TAB),LGUI(1), LGUI(2), RCS(KC_P9),RCS(KC_P3),LGUI(8),LGUI(9),KC_UNDS, KC_MINS, KC_EQL,  KC_PLUS, KC_F1,
-        KC_CAPS,   LGUI(3), LGUI(4), LGUI(5), LGUI(6), LGUI(7), KC_RCTL, LCTL(KC_GRV),RCS(KC_U),RCS(KC_M),RCS(KC_Y),KC_TRNS,
-        KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, MO(6),   KC_TRNS, KC_DEL,  KC_TRNS, RCS(KC_E),RCS(KC_QUOT),RCS(KC_D),LCA(KC_QUOT)
+        KC_GRV,         KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     KC_PERC,    KC_CIRC,    KC_AMPR,       KC_ASTR,     LCTL(KC_T),   RCS(KC_O),  LCTL(KC_P),
+        LCA(KC_TAB),    LGUI(KC_1), LGUI(KC_2), RCS(KC_P9), RCS(KC_P3), LGUI(KC_8), LGUI(KC_9), KC_UNDS,       KC_MINS,     KC_EQL,       KC_PLUS,    KC_F1,
+        KC_CAPS,        LGUI(KC_3), LGUI(KC_4), LGUI(KC_5), LGUI(KC_6), LGUI(KC_7), KC_RCTL,    LCTL(KC_GRV),  RCS(KC_U),   RCS(KC_M),    RCS(KC_Y),  KC_TRNS,
+        KC_TRNS,        KC_TRNS,    KC_TRNS,    KC_TRNS,    MO(6),      KC_TRNS,    KC_DEL,     KC_TRNS,       RCS(KC_E),   RCS(KC_QUOT), RCS(KC_D),  LCA(KC_QUOT)
     ),
 
     /*
