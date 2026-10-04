@@ -19,7 +19,9 @@ enum {
     TD_U_ACCENT = 4,
     TD_N_ACCENT = 5,
     TD_C_ACCENT = 6,
-    TD_SHIFT_CAPS = 7
+    TD_SHIFT_CAPS = 7,
+    TD_X_CUT = 8,
+    TD_V_PASTE = 9
 };
 
 // Define what happens on each tap count for E
@@ -174,6 +176,34 @@ void dance_shift_caps_reset(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+void dance_x_cut_finished(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        register_code16(KC_X);
+    } else if (state->count == 2) {
+        tap_code16(LCTL(KC_X));
+    }
+}
+
+void dance_x_cut_reset(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        unregister_code16(KC_X);
+    }
+}
+
+void dance_v_paste_finished(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        register_code16(KC_V);
+    } else if (state->count == 2) {
+        tap_code16(LGUI(KC_V));
+    }
+}
+
+void dance_v_paste_reset(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        unregister_code16(KC_V);
+    }
+}
+
 
 // Register the tap dance in QMK's tap dance structure
 tap_dance_action_t tap_dance_actions[] = {
@@ -185,6 +215,8 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_N_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_n_finished, dance_n_reset),
     [TD_C_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_c_finished, dance_c_reset),
     [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_shift_caps_finished, dance_shift_caps_reset),
+    [TD_X_CUT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_x_cut_finished, dance_x_cut_reset),
+    [TD_V_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_v_paste_finished, dance_v_paste_reset),
 };
 
 
@@ -196,61 +228,61 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * |  TAB  |   A   |   O   |   E   |   U   |   I   |   D   |   H   |   T   |   N   |   S   |  ENT  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
-     * | Shift |   Z   |   Q   |   J   |   K   |   X   |   B   |   M   |   W   |   V   | Shift | Enter |
+     * | Shift |   Z   |   Q   |   J   |   K   | TD(X) |   B   |   M   |   W   | TD(V) |  SLSH | Shift |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
-     * | MO(7) | Ctrl  |  Alt  |  GUI  | MO(3) | Space | BCKSP | MO(4) |  Left |  Down |   Up  | Right |
+     * | Ctrl  | MO(7) |  GUI  |  Alt  | MO(3) | Space | Bcksp | MO(4) |  Left |  Down |   Up  | Right |
      * `------------------------------------------------------------------------------------------------'
      */
 
 
     [0] = LAYOUT_ortho_4x12(
-        LT(5,KC_ESC),       KC_SCLN, KC_COMM, KC_DOT,   KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_QUOT,
-        KC_TAB,             KC_A,    KC_O,    KC_E,     KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_ENT,
-        TD(TD_SHIFT_CAPS),  KC_Z,    KC_Q,    KC_J,     KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_SLSH, KC_RSFT,
-        MO(7),              KC_LCTL, KC_LALT, KC_LGUI,  MO(3),   KC_SPC,  KC_BSPC, MO(4),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        LT(5,KC_ESC),       KC_SCLN, KC_COMM, KC_DOT,   KC_P,    KC_Y,          KC_F,    KC_G,    KC_C,    KC_R,            KC_L,    KC_QUOT,
+        KC_TAB,             KC_A,    KC_O,    KC_E,     KC_U,    KC_I,          KC_D,    KC_H,    KC_T,    KC_N,            KC_S,    KC_ENT,
+        TD(TD_SHIFT_CAPS),  KC_Z,    KC_Q,    KC_J,     KC_K,    TD(TD_X_CUT),  KC_B,    KC_M,    KC_W,    TD(TD_V_PASTE),  KC_SLSH, KC_RSFT,
+        KC_LCTL,            MO(7),   KC_LGUI, KC_LALT,  MO(3),   KC_SPC,        KC_BSPC, MO(4),   KC_LEFT, KC_DOWN,         KC_UP,   KC_RGHT
     ),
 
     /*
      * Layer 1: Alternate Layout Base
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * | LT5ESC|  SCLN |  COMM |  DOT  |   P   |   Y   |   F   |   G   |   C   |   R   |   L   |  QUOT |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * |  TAB  |   A   |   O   |   E   |   U   |   I   |   D   |   H   |   T   |   N   |   S   |  ENT  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
-     * | Shift |   Z   |   Q   |   J   |   K   |   X   |   B   |   M   |   W   |   V   |  SLSH | Enter |
+     * | Shift |   Z   |   Q   |   J   |   K   | TD(X) |   B   |   M   |   W   | TD(V) |  SLSH | Shift |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
-     * | MO(7) |  GUI  |  Alt  | Ctrl  | MO(8) |     Space     | MO(9) |  Left |  Down |   Up  | Right |
-     * `-----------------------------------------------------------------------------------'
+     * | Ctrl  | MO(7) |  GUI  |  Alt  | MO(8) | Space | Bcksp | MO(9) |  Left |  Down |   Up  | Right |
+     * `------------------------------------------------------------------------------------------------'
      */
     [1] = LAYOUT_ortho_4x12(
-        LT(5,KC_ESC), KC_SCLN, KC_COMM, KC_DOT, KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_QUOT,
-        KC_TAB,       KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_ENT,
-        KC_LSFT,      KC_Z,    KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_SLSH, KC_RSFT,
-        MO(7),        KC_LGUI, KC_LALT, KC_LCTL, MO(8),   KC_SPC,  KC_BSPC, MO(9),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        LT(5,KC_ESC),       KC_SCLN, KC_COMM, KC_DOT,   KC_P,    KC_Y,          KC_F,    KC_G,    KC_C,    KC_R,            KC_L,    KC_QUOT,
+        KC_TAB,             KC_A,    KC_O,    KC_E,     KC_U,    KC_I,          KC_D,    KC_H,    KC_T,    KC_N,            KC_S,    KC_ENT,
+        TD(TD_SHIFT_CAPS),  KC_Z,    KC_Q,    KC_J,     KC_K,    TD(TD_X_CUT),  KC_B,    KC_M,    KC_W,    TD(TD_V_PASTE),  KC_SLSH, KC_RSFT,
+        KC_LCTL,            MO(7),   KC_LGUI, KC_LALT,  MO(8),   KC_SPC,        KC_BSPC, MO(9),   KC_LEFT, KC_DOWN,         KC_UP,   KC_RGHT
     ),
 
     /*
      * Layer 2: QWERTY Base Layout
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * | LT5ESC|   Q   |   W   |   E   |   R   |   T   |   Y   |   U   |   I   |   O   |   P   |  QUOT |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * |  TAB  |   A   |   S   |   D   |   F   |   G   |   H   |   J   |   K   |   L   |  SCLN |  ENT  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
-     * | Shift |   Z   |   X   |   C   |   V   |   B   |   N   |   M   |  COMM |  DOT  |  SLSH | Enter |
+     * | Shift |   Z   |   X   |   C   |   V   |   B   |   N   |   M   |  COMM |  DOT  |  SLSH | Shift |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
-     * | MO(7) | Ctrl  |  Alt  |  GUI  | MO(3) |     Space     | MO(4) |  Left |  Down |   Up  | Right |
-     * `-----------------------------------------------------------------------------------'
+     * | Ctrl  | MO(7) |  GUI  |  Alt  | MO(3) | Space | Bcksp | MO(4) |  Left |  Down |   Up  | Right |
+     * `------------------------------------------------------------------------------------------------'
      */
     [2] = LAYOUT_ortho_4x12(
-        LT(5,KC_ESC), KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
-        KC_TAB,       KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
-        KC_LSFT,      KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-        MO(7),        KC_LCTL, KC_LALT, KC_LGUI, MO(3),   KC_SPC,  KC_BSPC, MO(4),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        LT(5,KC_ESC),       KC_Q,    KC_W,          KC_E,    KC_R,              KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
+        KC_TAB,             KC_A,    KC_S,          KC_D,    KC_F,              KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
+        TD(TD_SHIFT_CAPS),  KC_Z,    TD(TD_X_CUT),  KC_C,    TD(TD_V_PASTE),    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+        KC_LCTL,            MO(7),   KC_LGUI,       KC_LALT, MO(3),             KC_SPC,  KC_BSPC, MO(4),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
     ),
 
     /*
      * Layer 3: Function & Navigation / Symbols
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * |  F12  |   F2  |   F3  |   F4  | KC_NO | KC_NO | KC_NO |  LPRN |  RPRN | KC_NO | KC_NO |RCS(GRV|
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * |SFT(F12| LCA(K)| RCS(2)| RCS(F)|LCT(F) | LCA(F)| LCA(G)|  LBRC |  RBRC | KC_NO | KC_NO | KC_NO |
@@ -258,18 +290,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * | TRNS  | LCA(J)| LCA(L)| LCT(C)| LCT(V)| LCA(P)| LCA(Y)|  LCBR |  RCBR | KC_NO |  BSLS | TRNS  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  | TRNS  | TRNS  |  GUI  | TRNS  |    RAG(J)     | MO(6) |  Home |  PgDn |  PgUp |  End  |
-     * `-----------------------------------------------------------------------------------'
+     * `------------------------------------------------------------------------------------------------'
      */
     [3] = LAYOUT_ortho_4x12(
-        KC_F12,    KC_F2,   KC_F3,   KC_F4,   KC_NO,   KC_NO,   KC_NO,   KC_LPRN, KC_RPRN, KC_NO,   KC_NO,   RCS(KC_GRV),
-        LSFT(KC_F12),LCA(KC_K),RCS(KC_2),RCS(KC_F),LCTL(KC_F),LCA(KC_F),LCA(KC_G),KC_LBRC,KC_RBRC,KC_NO,KC_NO,KC_NO,
-        KC_TRNS,   LCA(KC_J),LCA(KC_L),LCTL(KC_C),LCTL(KC_V),LCA(KC_P),LCA(KC_Y),KC_LCBR,KC_RCBR,KC_NO,KC_BSLS,KC_TRNS,
-        KC_TRNS,   KC_TRNS, KC_TRNS, KC_LGUI, KC_TRNS, RAG(KC_J),RCS(KC_K),MO(6), KC_HOME, KC_PGDN, KC_PGUP, KC_END
+        KC_F12,       KC_F2,     KC_F3,     KC_F4,      KC_NO,       KC_NO,      KC_NO,      KC_LPRN, KC_RPRN, KC_NO,   KC_NO,   RCS(KC_GRV),
+        LSFT(KC_F12), LCA(KC_K), RCS(KC_2), RCS(KC_F),  LCTL(KC_F),  LCA(KC_F),  LCA(KC_G),  KC_LBRC, KC_RBRC, KC_NO,   KC_NO,   KC_NO,
+        KC_TRNS,      LCA(KC_J), LCA(KC_L), LCTL(KC_C), LCTL(KC_V),  LCA(KC_P),  LCA(KC_Y),  KC_LCBR, KC_RCBR, KC_NO,   KC_BSLS, KC_TRNS,
+        KC_TRNS,      KC_TRNS,   KC_TRNS,   KC_LGUI,    KC_TRNS,     RAG(KC_J),  RCS(KC_K),  MO(6),   KC_HOME, KC_PGDN, KC_PGUP, KC_END
     ),
 
     /*
      * Layer 4: Numbers & Special Characters
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * |  GRV  |  EXLM |   AT  |  HASH |  DLR  |  PERC |  CIRC |  AMPR |  ASTR | LCT(T)| RCS(O)| LCT(P)|
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * |LCA(TAB| GUI(1)| GUI(2)| RCS(P9| RCS(P3| GUI(8)| GUI(9)|  UNDS |  MINS |  EQL  |  PLUS |   F1  |
@@ -277,7 +309,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |  CAPS | GUI(3)| GUI(4)| GUI(5)| GUI(6)| GUI(7)| RCTL  | LCT(GRV| RCS(U)| RCS(M)| RCS(Y)| TRNS  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  | TRNS  | TRNS  | TRNS  | MO(6) |     TRNS      |  Del  | TRNS  | RCS(E)|RCS(QUO| RCS(D)|LCA(QUO|
-     * `-----------------------------------------------------------------------------------'
+     * `------------------------------------------------------------------------------------------------'
      */
     [4] = LAYOUT_ortho_4x12(
         KC_GRV,    KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, LCTL(KC_T),RCS(KC_O),LCTL(KC_P),
@@ -288,7 +320,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
      * Layer 5: Extended Function / Numpad block
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * | TRNS  |  F10  |  F11  |SFT(F11|   F5  | RCS(F5| KC_NO |   P7  |   P8  |   P9  | KC_NO | KC_NO |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  |   F6  |   F7  |   F8  |   F9  | KC_NO | KC_NO |   P4  |   P5  |   P6  |  MINS | KC_NO |
@@ -296,7 +328,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * | TRNS  | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO |   P1  |   P2  |   P3  |  SLSH | KC_NO |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  | TRNS  | TRNS  | TRNS  | TRNS  |      Space    |  BSPC |   P0  |  PDOT | KC_NO | KC_NO |  NUM  |
-     * `-----------------------------------------------------------------------------------'
+     * `------------------------------------------------------------------------------------------------'
      */
     [5] = LAYOUT_ortho_4x12(
         KC_TRNS,   KC_F10,  KC_F11,  LSFT(KC_F11),KC_F5,RCS(KC_F5),KC_NO,   KC_P7,   KC_P8,   KC_P9,   KC_NO,   KC_NO,
@@ -307,7 +339,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
      * Layer 6: Configuration & RGB / Bootloader
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * | TRNS  | QK_BOT| DB_TOG| UG_TOG| UG_NXT| UG_HUE| UG_HUD| UG_SAT| UG_SAD| UG_VAL| UG_VAD|  Del  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO | DF(0) | DF(1) | DF(2) | TRNS  | TRNS  |
@@ -315,7 +347,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * | TRNS  | RGB_MP| RGB_MB| RGB_MR|RGB_MSW|RGB_MSN|RGB_MK |RGB_MX | RGB_MG| KC_NO | KC_NO | TRNS  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  | TRNS  | TRNS  | TRNS  | TRNS  |     TRNS      | TRNS  | TRNS  | TRNS  | TRNS  | TRNS  |
-     * `-----------------------------------------------------------------------------------'
+     * `------------------------------------------------------------------------------------------------'
      */
     [6] = LAYOUT_ortho_4x12(
         KC_TRNS,   QK_BOOT, DB_TOGG, UG_TOGG, UG_NEXT, UG_HUEU, UG_HUED, UG_SATU, UG_SATD, UG_VALU, UG_VALD, KC_DEL,
@@ -326,7 +358,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
      * Layer 7: Media, Brightness & Mouse Controls
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * | KC_NO | BRID  | BRIU  | KC_NO | KC_NO |  MPRV |  MPLY |  MNXT |  MUTE |  VOLD |  VOLU | KC_NO |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * |LSG(4) | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO |MS_LEFT|MS_DOWN| MS_UP |MS_RGHT| KC_NO |
@@ -334,7 +366,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * | PSCR  |MS_BTN3|MS_BTN2|MS_BTN1| KC_NO | KC_NO | KC_NO | KC_NO |MS_WHLL|MS_WHLD|MS_WHLU|MS_WHLR|
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  |MS_ACL0|MS_ACL1|MS_ACL2| KC_NO |     KC_NO     | KC_NO |MS_LEFT|MS_DOWN| MS_UP |MS_RGHT|
-     * `-----------------------------------------------------------------------------------'
+     * `------------------------------------------------------------------------------------------------'
      */
     [7] = LAYOUT_ortho_4x12(
         KC_NO,     KC_BRID, KC_BRIU, KC_NO,   KC_NO,   KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU, KC_NO,
@@ -345,7 +377,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
      * Layer 8: Alternate Functions / Secondary Nav
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * |  F12  |   F2  |   F3  |   F4  | KC_NO | KC_NO | KC_NO |  LPRN |  RPRN | KC_NO | KC_NO |RCS(GRV|
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * |SFT(F12| LCA(K)| RCS(2)| RCS(F)| GUI(F)| LCA(F)| LCA(G)|  LBRC |  RBRC | KC_NO | KC_NO | KC_NO |
@@ -353,7 +385,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * | TRNS  | LCA(J)| LCA(L)| GUI(C)| GUI(V)| LCA(P)| LCA(Y)|  LCBR |  RCBR | KC_NO |  BSLS | TRNS  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  | TRNS  | TRNS  | TRNS  | TRNS  |     RAG(J)    | MO(6) |  Home |  PgDn |  PgUp |  End  |
-     * `-----------------------------------------------------------------------------------'
+     * `------------------------------------------------------------------------------------------------'
      */
     [8] = LAYOUT_ortho_4x12(
         KC_F12,    KC_F2,   KC_F3,   KC_F4,   KC_NO,   KC_NO,   KC_NO,   KC_LPRN, KC_RPRN, KC_NO,   KC_NO,   RCS(KC_GRV),
@@ -364,7 +396,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
      * Layer 9: Alternate Symbols / Shortcuts
-     * ,-----------------------------------------------------------------------------------.
+     * ,------------------------------------------------------------------------------------------------.
      * |  GRV  |  EXLM |   AT  |  HASH |  DLR  |  PERC |  CIRC |  AMPR |  ASTR | LCT(T)| RCS(O)| LCT(P)|
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * |LCA(TAB| GUI(1)| GUI(2)| RCS(P9| RCS(P3| GUI(8)| GUI(9)|  UNDS |  MINS |  EQL  |  PLUS |   F1  |
@@ -372,7 +404,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |  CAPS | GUI(3)| GUI(4)| GUI(5)| GUI(6)| GUI(7)| RCTL  | LCT(GRV| RCS(U)| RCS(M)| RCS(Y)| TRNS  |
      * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
      * | TRNS  | TRNS  | TRNS  | TRNS  | MO(6) |     TRNS      |  Del  | TRNS  | RCS(E)|RCS(QUO| RCS(D)|LCA(QUO|
-     * `-----------------------------------------------------------------------------------'
+     * `-------------------------------------------------------------------------------------------------'
      */
     [9] = LAYOUT_ortho_4x12(
         KC_GRV,    KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, LCTL(KC_T),RCS(KC_O),LCTL(KC_P),
