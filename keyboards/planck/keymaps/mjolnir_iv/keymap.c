@@ -12,16 +12,9 @@
 
  // Define names for your custom tap dances
 enum {
-    TD_E_ACCENT = 0,
-    TD_A_ACCENT = 1,
-    TD_O_ACCENT = 2,
-    TD_I_ACCENT = 3,
-    TD_U_ACCENT = 4,
-    TD_N_ACCENT = 5,
-    TD_C_ACCENT = 6,
-    TD_SHIFT_CAPS = 7,
-    TD_X_CUT = 8,
-    TD_V_PASTE = 9
+    TD_SHIFT_CAPS = 0,
+    TD_X_CUT = 1,
+    TD_V_PASTE = 2
 };
 
 
@@ -76,138 +69,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-// Define what happens on each tap count for E
-void dance_e_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'e'
-        register_code16(KC_E);
-    } else if (state->count == 2) {
-        // Double tap: send 'é'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'é' (Unicode hex codepoint U+00E9)
-        register_unicode(0x00E9);
-    }
-}
-
-void dance_e_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_E);
-    }
-}
-
-// Define what happens on each tap count for A
-void dance_a_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'a'
-        register_code16(KC_A);
-    } else if (state->count == 2) {
-        // Double tap: send 'à'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'à' (Unicode hex codepoint U+00E0)
-        register_unicode(0x00E0);
-    }
-}
-
-void dance_a_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_A);
-    }
-}
-
-// Define what happens on each tap count for O
-void dance_o_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'o'
-        register_code16(KC_O);
-    } else if (state->count == 2) {
-        // Double tap: send 'ô'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ô' (Unicode hex codepoint U+00F4)
-        register_unicode(0x00F4);
-    }
-}
-
-void dance_o_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_O);
-    }
-}
-
-// Define what happens on each tap count for I
-void dance_i_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'i'
-        register_code16(KC_I);
-    } else if (state->count == 2) {
-        // Double tap: send 'ï'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ï' (Unicode hex codepoint U+00EF)
-        register_unicode(0x00EF);
-    }
-}
-
-void dance_i_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_I);
-    }
-}
-
-// Define what happens on each tap count for U
-void dance_u_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'u'
-        register_code16(KC_U);
-    } else if (state->count == 2) {
-        // Double tap: send 'ù'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ù' (Unicode hex codepoint U+00F9)
-        register_unicode(0x00F9);
-    }
-}
-
-void dance_u_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_U);
-    }
-}
-
-// Define what happens on each tap count for N
-void dance_n_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'n'
-        register_code16(KC_N);
-    } else if (state->count == 2) {
-        // Double tap: send 'ñ'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ñ' (Unicode hex codepoint U+00F1)
-        register_unicode(0x00F1);
-    }
-}
-
-void dance_n_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_N);
-    }
-}
-
-// Define what happens on each tap count for C
-void dance_c_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'c'
-        register_code16(KC_C);
-    } else if (state->count == 2) {
-        // Double tap: send 'ç' with cedilla (ç)
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ç' (Unicode hex codepoint U+00E7)
-        register_unicode(0x00E7);
-    }
-}
-
-void dance_c_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_C);
-    }
-}
 
 // 2. Implement the Tap Dance logic for Shift and Caps Lock
 void dance_shift_caps_finished(tap_dance_state_t *state, void *user_data) {
@@ -259,13 +120,6 @@ void dance_v_paste_reset(tap_dance_state_t *state, void *user_data) {
 
 // Register the tap dance in QMK's tap dance structure
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_E_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_e_finished, dance_e_reset),
-    [TD_A_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_a_finished, dance_a_reset),
-    [TD_O_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_o_finished, dance_o_reset),
-    [TD_I_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_i_finished, dance_i_reset),
-    [TD_U_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_u_finished, dance_u_reset),
-    [TD_N_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_n_finished, dance_n_reset),
-    [TD_C_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_c_finished, dance_c_reset),
     [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_shift_caps_finished, dance_shift_caps_reset),
     [TD_X_CUT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_x_cut_finished, dance_x_cut_reset),
     [TD_V_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_v_paste_finished, dance_v_paste_reset),
