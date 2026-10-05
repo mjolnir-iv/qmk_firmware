@@ -24,6 +24,58 @@ enum {
     TD_V_PASTE = 9
 };
 
+
+enum custom_keycodes {
+    EMOJI_THUMBSUP = SAFE_RANGE, // 👍 (0x1F44D) Thumbs Up (The absolute leader, making up roughly 30% to 50% of all workplace reactions for quick approvals and "read receipts")
+    EMOJI_HEART,                 // ❤️ (0x2764)  Red Heart / Heart Support
+    EMOJI_CRY_LAUGH,             // 😂 (0x1F602) Face with Tears of Joy / Laughing Face
+    EMOJI_FIRE,                  // 🔥 (0x1F525) Fire (used to show excitement or call something "cool" or high-performing)
+    EMOJI_CHECK,                 // ✅ (0x2705)  Check Mark (signaling task completion or agreement)
+    EMOJI_PARTY,                 // 🎉 (0x1F389) Party Popper / Celebration
+    EMOJI_SMILE,                 // 😊 (0x1F60A) Smiling Face / Grinning Face
+    EMOJI_PRAY,                  // 🙏 (0x1F64F) Folded Hands (expressing gratitude or "thank you")
+    EMOJI_LIGHTBULB,             // 💡 (0x1F4A1) Light Bulb (representing ideas or suggestions)
+    EMOJI_HUNDRED,               // 💯 (0x1F4AF) Hundred Points (signaling total agreement or excellent work)
+    EMOJI_CLAP,                  // 👏 (0x1F44F) Clapping Hands (encouragement and applause)
+    EMOJI_ROCKET,                // 🚀 (0x1F680) Rocket (launching projects or rapid progress)
+    EMOJI_EYES,                  // 👀 (0x1F440) Eyes (watching a thread, reviewing a document, or "noted")
+    EMOJI_PUSHPIN,               // 📌 (0x1F4CC) Pushpin (marking important messages or priorities)
+    EMOJI_THINKING,              // 🤔 (0x1F914) Thinking Face (evaluating an idea or pondering a question)
+    EMOJI_RAISE_HANDS,           // 🙌 (0x1F64C) Raising Hands (team spirit and approval)
+    EMOJI_HANDSHAKE,             // 🤝 (0x1F91D) Handshake (collaboration or agreement)
+    EMOJI_STAR,                  // ⭐ (0x2B50) Star (recognition or praise)
+    EMOJI_CALENDAR,              // 📅 (0x1F4C5) Calendar (scheduling or time-related tasks)
+    EMOJI_FIST_BUMP              // 🤜🤛 (0x1F91C, 0x1F91B) Fist Bump (solidarity or high-five)
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+            case EMOJI_THUMBSUP:     register_unicode(0x1F44D); return false;
+            case EMOJI_HEART:        register_unicode(0x2764);  return false;
+            case EMOJI_CRY_LAUGH:    register_unicode(0x1F602); return false;
+            case EMOJI_FIRE:         register_unicode(0x1F525); return false;
+            case EMOJI_CHECK:        register_unicode(0x2705);  return false;
+            case EMOJI_PARTY:        register_unicode(0x1F389); return false;
+            case EMOJI_SMILE:        register_unicode(0x1F60A); return false;
+            case EMOJI_PRAY:         register_unicode(0x1F64F); return false;
+            case EMOJI_LIGHTBULB:    register_unicode(0x1F4A1); return false;
+            case EMOJI_HUNDRED:      register_unicode(0x1F4AF); return false;
+            case EMOJI_CLAP:         register_unicode(0x1F44F); return false;
+            case EMOJI_ROCKET:       register_unicode(0x1F680); return false;
+            case EMOJI_EYES:         register_unicode(0x1F440); return false;
+            case EMOJI_PUSHPIN:      register_unicode(0x1F4CC); return false;
+            case EMOJI_THINKING:     register_unicode(0x1F914); return false;
+            case EMOJI_RAISE_HANDS:  register_unicode(0x1F64C); return false;
+            case EMOJI_HANDSHAKE:    register_unicode(0x1F91D); return false;
+            case EMOJI_STAR:         register_unicode(0x2B50);  return false;
+            case EMOJI_CALENDAR:     register_unicode(0x1F4C5); return false;
+            case EMOJI_FIST_BUMP:    register_unicode(0x1F91C); register_unicode(0x1F91B); return false;
+        }
+    }
+    return true;
+}
+
 // Define what happens on each tap count for E
 void dance_e_finished(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
@@ -236,10 +288,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
     [0] = LAYOUT_ortho_4x12(
-        LT(5,KC_ESC),       KC_SCLN, KC_COMM, KC_DOT,   KC_P,    KC_Y,          KC_F,    KC_G,    KC_C,    KC_R,            KC_L,    KC_QUOT,
-        KC_TAB,             KC_A,    KC_O,    KC_E,     KC_U,    KC_I,          KC_D,    KC_H,    KC_T,    KC_N,            KC_S,    KC_ENT,
-        TD(TD_SHIFT_CAPS),  KC_Z,    KC_Q,    KC_J,     KC_K,    TD(TD_X_CUT),  KC_B,    KC_M,    KC_W,    TD(TD_V_PASTE),  KC_SLSH, KC_RSFT,
-        KC_LCTL,            MO(7),   KC_LGUI, KC_LALT,  MO(3),   KC_SPC,        KC_BSPC, MO(4),   KC_LEFT, KC_DOWN,         KC_UP,   KC_RGHT
+        LT(5,KC_ESC),       KC_SCLN,        KC_COMM, KC_DOT,   KC_P,    KC_Y,          KC_F,    KC_G,    KC_C,    KC_R,            KC_L,    KC_QUOT,
+        KC_TAB,             KC_A,           KC_O,    KC_E,     KC_U,    KC_I,          KC_D,    KC_H,    KC_T,    KC_N,            KC_S,    KC_ENT,
+        TD(TD_SHIFT_CAPS),  LT(10, KC_Z),   KC_Q,    KC_J,     KC_K,    TD(TD_X_CUT),  KC_B,    KC_M,    KC_W,    TD(TD_V_PASTE),  KC_SLSH, KC_RSFT,
+        KC_LCTL,            MO(7),          KC_LGUI, KC_LALT,  MO(3),   KC_SPC,        KC_BSPC, MO(4),   KC_LEFT, KC_DOWN,         KC_UP,   KC_RGHT
     ),
 
     /*
@@ -411,7 +463,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LCA(KC_TAB),LGUI(1), LGUI(2), RCS(KC_P9),RCS(KC_P3),LGUI(8),LGUI(9),KC_UNDS, KC_MINS, KC_EQL,  KC_PLUS, KC_F1,
         KC_CAPS,   LGUI(3), LGUI(4), LGUI(5), LGUI(6), LGUI(7), KC_RCTL, LCTL(KC_GRV),RCS(KC_U),RCS(KC_M),RCS(KC_Y),KC_TRNS,
         KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, MO(6),   KC_TRNS, KC_DEL,  KC_TRNS, RCS(KC_E),RCS(KC_QUOT),RCS(KC_D),LCA(KC_QUOT)
+    ),
+    /*
+     * Layer 10: Emoji Layer
+     * ,------------------------------------------------------------------------------------.
+     * | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | 👍   | ❤️  | 😂   | 🔥   | ✅  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | 🎉   | 😊  | 🙏   | 💡   | 💯  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | 👏   | 🚀  | 👀   | 📌   | 🤔  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | 🙋   | 🤝   | ⭐  | 📅   |🤜🤛 |
+     * `------------------------------------------------------------------------------------'
+     */
+    [10] = LAYOUT_ortho_4x12(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, EMOJI_THUMBSUP,     EMOJI_HEART,      EMOJI_CRY_LAUGH,  EMOJI_FIRE,        EMOJI_CHECK,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, EMOJI_PARTY,        EMOJI_SMILE,      EMOJI_PRAY,       EMOJI_LIGHTBULB,   EMOJI_HUNDRED,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, EMOJI_CLAP,         EMOJI_ROCKET,     EMOJI_EYES,       EMOJI_PUSHPIN,     EMOJI_THINKING,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, EMOJI_RAISE_HANDS,  EMOJI_HANDSHAKE,  EMOJI_STAR,       EMOJI_CALENDAR,    EMOJI_FIST_BUMP
     )
+
+    // [10] = LAYOUT_ortho_4x12(
+    //     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MY_COOL_EMOJI,  UM(1),  UM(2),  UM(3),  UM(4),
+    //     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UM(5),  UM(6),  UM(7),  UM(8),  UM(9),
+    //     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UM(10), UM(11), UM(12), UM(13), UM(14),
+    //     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UM(15), UM(16), UM(17), UM(18), UM(19)
+    // )
 };
 
 #ifdef OTHER_KEYMAP_C
