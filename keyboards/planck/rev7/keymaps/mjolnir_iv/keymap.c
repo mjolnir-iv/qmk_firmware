@@ -12,148 +12,64 @@
 
  // Define names for your custom tap dances
 enum {
-    TD_E_ACCENT = 0,
-    TD_A_ACCENT = 1,
-    TD_O_ACCENT = 2,
-    TD_I_ACCENT = 3,
-    TD_U_ACCENT = 4,
-    TD_N_ACCENT = 5,
-    TD_C_ACCENT = 6,
-    TD_SHIFT_CAPS = 7
+    TD_SHIFT_CAPS = 0,
+    TD_X_CUT = 1,
+    TD_V_PASTE = 2,
+    TD_GRV_TILDE = 3
 };
 
-// Define what happens on each tap count for E
-void dance_e_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'e'
-        register_code16(KC_E);
-    } else if (state->count == 2) {
-        // Double tap: send 'é'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'é' (Unicode hex codepoint U+00E9)
-        register_unicode(0x00E9);
+
+enum custom_keycodes {
+    EMOJI_THUMBSUP = SAFE_RANGE, // 👍 (0x1F44D) Thumbs Up (The absolute leader, making up roughly 30% to 50% of all workplace reactions for quick approvals and "read receipts")
+    EMOJI_HEART,                 // ❤️ (0x2764)  Red Heart / Heart Support
+    EMOJI_CRY_LAUGH,             // 😂 (0x1F602) Face with Tears of Joy / Laughing Face
+    EMOJI_FIRE,                  // 🔥 (0x1F525) Fire (used to show excitement or call something "cool" or high-performing)
+    EMOJI_CHECK,                 // ✅ (0x2705)  Check Mark (signaling task completion or agreement)
+    EMOJI_PARTY,                 // 🎉 (0x1F389) Party Popper / Celebration
+    EMOJI_SMILE,                 // 😊 (0x1F60A) Smiling Face / Grinning Face
+    EMOJI_PRAY,                  // 🙏 (0x1F64F) Folded Hands (expressing gratitude or "thank you")
+    EMOJI_LIGHTBULB,             // 💡 (0x1F4A1) Light Bulb (representing ideas or suggestions)
+    EMOJI_HUNDRED,               // 💯 (0x1F4AF) Hundred Points (signaling total agreement or excellent work)
+    EMOJI_CLAP,                  // 👏 (0x1F44F) Clapping Hands (encouragement and applause)
+    EMOJI_ROCKET,                // 🚀 (0x1F680) Rocket (launching projects or rapid progress)
+    EMOJI_EYES,                  // 👀 (0x1F440) Eyes (watching a thread, reviewing a document, or "noted")
+    EMOJI_PUSHPIN,               // 📌 (0x1F4CC) Pushpin (marking important messages or priorities)
+    EMOJI_THINKING,              // 🤔 (0x1F914) Thinking Face (evaluating an idea or pondering a question)
+    EMOJI_RAISE_HANDS,           // 🙌 (0x1F64C) Raising Hands (team spirit and approval)
+    EMOJI_HANDSHAKE,             // 🤝 (0x1F91D) Handshake (collaboration or agreement)
+    EMOJI_STAR,                  // ⭐ (0x2B50) Star (recognition or praise)
+    EMOJI_CALENDAR,              // 📅 (0x1F4C5) Calendar (scheduling or time-related tasks)
+    EMOJI_FIST_BUMP              // 🤜🤛 (0x1F91C, 0x1F91B) Fist Bump (solidarity or high-five)
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+            case EMOJI_THUMBSUP:     register_unicode(0x1F44D); return false;
+            case EMOJI_HEART:        register_unicode(0x2764);  return false;
+            case EMOJI_CRY_LAUGH:    register_unicode(0x1F602); return false;
+            case EMOJI_FIRE:         register_unicode(0x1F525); return false;
+            case EMOJI_CHECK:        register_unicode(0x2705);  return false;
+            case EMOJI_PARTY:        register_unicode(0x1F389); return false;
+            case EMOJI_SMILE:        register_unicode(0x1F60A); return false;
+            case EMOJI_PRAY:         register_unicode(0x1F64F); return false;
+            case EMOJI_LIGHTBULB:    register_unicode(0x1F4A1); return false;
+            case EMOJI_HUNDRED:      register_unicode(0x1F4AF); return false;
+            case EMOJI_CLAP:         register_unicode(0x1F44F); return false;
+            case EMOJI_ROCKET:       register_unicode(0x1F680); return false;
+            case EMOJI_EYES:         register_unicode(0x1F440); return false;
+            case EMOJI_PUSHPIN:      register_unicode(0x1F4CC); return false;
+            case EMOJI_THINKING:     register_unicode(0x1F914); return false;
+            case EMOJI_RAISE_HANDS:  register_unicode(0x1F64C); return false;
+            case EMOJI_HANDSHAKE:    register_unicode(0x1F91D); return false;
+            case EMOJI_STAR:         register_unicode(0x2B50);  return false;
+            case EMOJI_CALENDAR:     register_unicode(0x1F4C5); return false;
+            case EMOJI_FIST_BUMP:    register_unicode(0x1F91C); register_unicode(0x1F91B); return false;
+        }
     }
+    return true;
 }
 
-void dance_e_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_E);
-    }
-}
-
-// Define what happens on each tap count for A
-void dance_a_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'a'
-        register_code16(KC_A);
-    } else if (state->count == 2) {
-        // Double tap: send 'à'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'à' (Unicode hex codepoint U+00E0)
-        register_unicode(0x00E0);
-    }
-}
-
-void dance_a_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_A);
-    }
-}
-
-// Define what happens on each tap count for O
-void dance_o_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'o'
-        register_code16(KC_O);
-    } else if (state->count == 2) {
-        // Double tap: send 'ô'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ô' (Unicode hex codepoint U+00F4)
-        register_unicode(0x00F4);
-    }
-}
-
-void dance_o_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_O);
-    }
-}
-
-// Define what happens on each tap count for I
-void dance_i_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'i'
-        register_code16(KC_I);
-    } else if (state->count == 2) {
-        // Double tap: send 'ï'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ï' (Unicode hex codepoint U+00EF)
-        register_unicode(0x00EF);
-    }
-}
-
-void dance_i_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_I);
-    }
-}
-
-// Define what happens on each tap count for U
-void dance_u_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'u'
-        register_code16(KC_U);
-    } else if (state->count == 2) {
-        // Double tap: send 'ù'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ù' (Unicode hex codepoint U+00F9)
-        register_unicode(0x00F9);
-    }
-}
-
-void dance_u_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_U);
-    }
-}
-
-// Define what happens on each tap count for N
-void dance_n_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'n'
-        register_code16(KC_N);
-    } else if (state->count == 2) {
-        // Double tap: send 'ñ'
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ñ' (Unicode hex codepoint U+00F1)
-        register_unicode(0x00F1);
-    }
-}
-
-void dance_n_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_N);
-    }
-}
-
-// Define what happens on each tap count for C
-void dance_c_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        // Single tap: send standard 'c'
-        register_code16(KC_C);
-    } else if (state->count == 2) {
-        // Double tap: send 'ç' with cedilla (ç)
-        // (Alternatively, use unicode or a specific macro if SEND_STRING doesn't match your layout)
-        // Double tap: Send 'ç' (Unicode hex codepoint U+00E7)
-        register_unicode(0x00E7);
-    }
-}
-
-void dance_c_reset(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code16(KC_C);
-    }
-}
 
 // 2. Implement the Tap Dance logic for Shift and Caps Lock
 void dance_shift_caps_finished(tap_dance_state_t *state, void *user_data) {
@@ -174,138 +90,186 @@ void dance_shift_caps_reset(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+void dance_x_cut_finished(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        register_code16(KC_X);
+    } else if (state->count == 2) {
+        tap_code16(LCTL(KC_X));
+    }
+}
+
+void dance_x_cut_reset(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        unregister_code16(KC_X);
+    }
+}
+
+void dance_v_paste_finished(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        register_code16(KC_V);
+    } else if (state->count == 2) {
+        tap_code16(LGUI(KC_V));
+    }
+}
+
+void dance_v_paste_reset(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        unregister_code16(KC_V);
+    }
+}
+
+void dance_grv_tilde_finished(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        register_code16(KC_GRV);
+    } else if (state->count == 2) {
+        tap_code16(KC_ESC);
+    }
+}
+
+void dance_grv_tilde_reset(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        unregister_code16(KC_GRV);
+    }
+}
+
 
 // Register the tap dance in QMK's tap dance structure
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_E_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_e_finished, dance_e_reset),
-    [TD_A_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_a_finished, dance_a_reset),
-    [TD_O_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_o_finished, dance_o_reset),
-    [TD_I_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_i_finished, dance_i_reset),
-    [TD_U_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_u_finished, dance_u_reset),
-    [TD_N_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_n_finished, dance_n_reset),
-    [TD_C_ACCENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_c_finished, dance_c_reset),
     [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_shift_caps_finished, dance_shift_caps_reset),
+    [TD_X_CUT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_x_cut_finished, dance_x_cut_reset),
+    [TD_V_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_v_paste_finished, dance_v_paste_reset),
+    [TD_GRV_TILDE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_grv_tilde_finished, dance_grv_tilde_reset),
 };
-
-// const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-//     [0] = LAYOUT_ortho_4x12(LT(5,KC_ESC), KC_SCLN, KC_COMM, KC_DOT, KC_P, KC_Y, KC_F, KC_G, KC_C, KC_R, KC_L, KC_QUOT, KC_TAB, KC_A, KC_O, TD(TD_E_ACCENT), KC_U, KC_I, KC_D, KC_H, KC_T, KC_N, KC_S, KC_ENT, KC_LSFT, KC_Z, KC_Q, KC_J, KC_K, KC_X, KC_B, KC_M, KC_W, KC_V, KC_SLSH, KC_RSFT, MO(7), KC_LCTL, KC_LALT, KC_LGUI, MO(3), KC_SPC, KC_BSPC, MO(4), KC_LEFT, KC_DOWN, KC_UP, KC_RGHT),
-//     [1] = LAYOUT_ortho_4x12(LT(5,KC_ESC), KC_SCLN, KC_COMM, KC_DOT, KC_P, KC_Y, KC_F, KC_G, KC_C, KC_R, KC_L, KC_QUOT, KC_TAB, KC_A, KC_O, KC_E, KC_U, KC_I, KC_D, KC_H, KC_T, KC_N, KC_S, KC_ENT, KC_LSFT, KC_Z, KC_Q, KC_J, KC_K, KC_X, KC_B, KC_M, KC_W, KC_V, KC_SLSH, KC_RSFT, MO(7), KC_LGUI, KC_LALT, KC_LCTL, MO(8), KC_SPC, KC_BSPC, MO(9), KC_LEFT, KC_DOWN, KC_UP, KC_RGHT),
-//     [2] = LAYOUT_ortho_4x12(LT(5,KC_ESC), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_QUOT, KC_TAB, KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_ENT, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_RSFT, MO(7), KC_LCTL, KC_LALT, KC_LGUI, MO(3), KC_SPC, KC_BSPC, MO(4), KC_LEFT, KC_DOWN, KC_UP, KC_RGHT),
-//     [3] = LAYOUT_ortho_4x12(KC_F12, KC_F2, KC_F3, KC_F4, KC_NO, KC_NO, KC_NO, KC_LPRN, KC_RPRN, KC_NO, KC_NO, RCS(KC_GRV), LSFT(KC_F12), LCA(KC_K), RCS(KC_2), RCS(KC_F), LCTL(KC_F), LCA(KC_F), LCA(KC_G), KC_LBRC, KC_RBRC, KC_NO, KC_NO, KC_NO, KC_TRNS, LCA(KC_J), LCA(KC_L), LCTL(KC_C), LCTL(KC_V), LCA(KC_P), LCA(KC_Y), KC_LCBR, KC_RCBR, KC_NO, KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LGUI, KC_TRNS, RAG(KC_J), RCS(KC_K), MO(6), KC_HOME, KC_PGDN, KC_PGUP, KC_END),
-//     [4] = LAYOUT_ortho_4x12(KC_GRV, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, LCTL(KC_T), RCS(KC_O), LCTL(KC_P), LCA(KC_TAB), LGUI(KC_1), LGUI(KC_2), RCS(KC_P9), RCS(KC_P3), LGUI(KC_8), LGUI(KC_9), KC_UNDS, KC_MINS, KC_EQL, KC_PLUS, KC_F1, KC_CAPS, LGUI(KC_3), LGUI(KC_4), LGUI(KC_5), LGUI(KC_6), LGUI(KC_7), KC_RCTL, LCTL(KC_GRV), RCS(KC_U), RCS(KC_M), RCS(KC_Y), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(6), KC_TRNS, KC_DEL, KC_TRNS, RCS(KC_E), RCS(KC_QUOT), RCS(KC_D), LCA(KC_QUOT)),
-//     [5] = LAYOUT_ortho_4x12(KC_TRNS, KC_F10, KC_F11, LSFT(KC_F11), KC_F5, RCS(KC_F5), KC_NO, KC_P7, KC_P8, KC_P9, KC_NO, KC_NO, KC_TRNS, KC_F6, KC_F7, KC_F8, KC_F9, KC_NO, KC_NO, KC_P4, KC_P5, KC_P6, KC_MINS, KC_NO, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_P1, KC_P2, KC_P3, KC_SLSH, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_SPC, KC_BSPC, KC_P0, KC_PDOT, KC_NO, KC_NO, KC_NUM),
-//     [6] = LAYOUT_ortho_4x12(KC_TRNS, QK_BOOT, DB_TOGG, UG_TOGG, UG_NEXT, UG_HUEU, UG_HUED, UG_SATU, UG_SATD, UG_VALU, UG_VALD, KC_DEL, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, DF(0), DF(1), DF(2), KC_TRNS, KC_TRNS, KC_TRNS, RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_SW, RGB_M_SN, RGB_M_K, RGB_M_X, RGB_M_G, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
-//     [7] = LAYOUT_ortho_4x12(KC_NO, KC_BRID, KC_BRIU, KC_NO, KC_NO, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU, KC_NO, LSG(KC_4), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, MS_LEFT, MS_DOWN, MS_UP, MS_RGHT, KC_NO, KC_PSCR, MS_BTN3, MS_BTN2, MS_BTN1, KC_NO, KC_NO, KC_NO, KC_NO, MS_WHLL, MS_WHLD, MS_WHLU, MS_WHLR, KC_TRNS, MS_ACL0, MS_ACL1, MS_ACL2, KC_NO, KC_NO, KC_NO, KC_NO, MS_LEFT, MS_DOWN, MS_UP, MS_RGHT),
-//     [8] = LAYOUT_ortho_4x12(KC_F12, KC_F2, KC_F3, KC_F4, KC_NO, KC_NO, KC_NO, KC_LPRN, KC_RPRN, KC_NO, KC_NO, RCS(KC_GRV), LSFT(KC_F12), LCA(KC_K), RCS(KC_2), RCS(KC_F), LGUI(KC_F), LCA(KC_F), LCA(KC_G), KC_LBRC, KC_RBRC, KC_NO, KC_NO, KC_NO, KC_TRNS, LCA(KC_J), LCA(KC_L), LGUI(KC_C), LGUI(KC_V), LCA(KC_P), LCA(KC_Y), KC_LCBR, KC_RCBR, KC_NO, KC_BSLS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LGUI, KC_TRNS, RAG(KC_J), RCS(KC_K), MO(6), KC_HOME, KC_PGDN, KC_PGUP, KC_END),
-//     [9] = LAYOUT_ortho_4x12(KC_GRV, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, LCTL(KC_T), RCS(KC_O), LCTL(KC_P), LCA(KC_TAB), LGUI(KC_1), LGUI(KC_2), RCS(KC_P9), RCS(KC_P3), LGUI(KC_8), LGUI(KC_9), KC_UNDS, KC_MINS, KC_EQL, KC_PLUS, KC_F1, KC_CAPS, LGUI(KC_3), LGUI(KC_4), LGUI(KC_5), LGUI(KC_6), LGUI(KC_7), KC_RCTL, LCTL(KC_GRV), RCS(KC_U), RCS(KC_M), RCS(KC_Y), KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MO(6), KC_TRNS, KC_DEL, KC_TRNS, RCS(KC_E), RCS(KC_QUOT), RCS(KC_D), LCA(KC_QUOT))
-// };
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
-     * Layer 0: Base Layer (Colemak-DH variant with Tap Dance E)
-     * ----------------------------------------------------------------------------------------------------
-     * | LT(5,ESC)|  SCLN  |  COMM  |   DOT  |    P   |    Y   |    F   |    G   |    C   |    R   |    L   |  QUOT  |
-     * |   TAB    |    A   |    O   | TD_ACC |    U   |    I   |    D   |    H   |    T   |    N   |    S   |   ENT  |
-     * |   LSFT   |    Z   |    Q   |    J   |    K   |    X   |    B   |    M   |    W   |    V   |  SLSH  |  RSFT  |
-     * |   MO(7)  |  LCTL  |  LALT  |  LGUI  |  MO(3) |    SPC |   BSPC |  MO(4) |  LEFT  |  DOWN  |   UP   |  RGHT  |
-     * ----------------------------------------------------------------------------------------------------
+     * Layer 0: Base Layer (Dvorak)
+     * ,------------------------------------------------------------------------------------------------.
+     * | LT5ESC|  SCLN |  COMM |  DOT  |   P   |   Y   |   F   |   G   |   C   |   R   |   L   |  QUOT |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |  TAB  |   A   |   O   |   E   |   U   |   I   |   D   |   H   |   T   |   N   |   S   |  ENT  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | Shift |   Z   |   Q   |   J   |   K   | TD(X) |   B   |   M   |   W   | TD(V) |  SLSH | Shift |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | Ctrl  | MO(7) |  GUI  |  Alt  | MO(3) | Space | Bcksp | MO(4) |  Left |  Down |   Up  | Right |
+     * `------------------------------------------------------------------------------------------------'
      */
+
+
     [0] = LAYOUT_ortho_4x12(
-        LT(5,KC_ESC), KC_SCLN, KC_COMM, KC_DOT, KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_QUOT,
-        KC_TAB,       KC_A,    KC_O,    KC_E,    KC_U,    KC_I,   KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_ENT,
-        TD(TD_SHIFT_CAPS),      KC_Z,    KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_SLSH, KC_RSFT,
-        MO(7),        KC_LCTL, KC_LALT, KC_LGUI, MO(3),   KC_SPC,  KC_BSPC, MO(4),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        TD(TD_GRV_TILDE),     LT(5,KC_SCLN),  KC_COMM, KC_DOT,   KC_P,    KC_Y,          KC_F,    KC_G,    KC_C,    KC_R,            KC_L,    KC_QUOT,
+        KC_TAB,               KC_A,           KC_O,    KC_E,     KC_U,    KC_I,          KC_D,    KC_H,    KC_T,    KC_N,            KC_S,    KC_ENT,
+        TD(TD_SHIFT_CAPS),    LT(10, KC_Z),   KC_Q,    KC_J,     KC_K,    TD(TD_X_CUT),  KC_B,    KC_M,    KC_W,    TD(TD_V_PASTE),  KC_SLSH, KC_RSFT,
+        KC_LCTL,              MO(7),          KC_LGUI, KC_LALT,  MO(3),   KC_SPC,        KC_BSPC, MO(4),   KC_LEFT, KC_DOWN,         KC_UP,   KC_RGHT
     ),
 
     /*
-     * Layer 1: Alternate Layout Base (Standard E instead of Tap Dance)
-     * ----------------------------------------------------------------------------------------------------
-     * | LT(5,ESC)|  SCLN  |  COMM  |   DOT  |    P   |    Y   |    F   |    G   |    C   |    R   |    L   |  QUOT  |
-     * |   TAB    |    A   |    O   |    E   |    U   |    I   |    D   |    H   |    T   |    N   |    S   |   ENT  |
-     * |   LSFT   |    Z   |    Q   |    J   |    K   |    X   |    B   |    M   |    W   |    V   |  SLSH  |  RSFT  |
-     * |   MO(7)  |  LGUI  |  LALT  |  LCTL  |  MO(8) |    SPC |   BSPC |  MO(9) |  LEFT  |  DOWN  |   UP   |  RGHT  |
-     * ----------------------------------------------------------------------------------------------------
+     * Layer 1: Alternate Layout Base
+     * ,------------------------------------------------------------------------------------------------.
+     * | LT5ESC|  SCLN |  COMM |  DOT  |   P   |   Y   |   F   |   G   |   C   |   R   |   L   |  QUOT |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |  TAB  |   A   |   O   |   E   |   U   |   I   |   D   |   H   |   T   |   N   |   S   |  ENT  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | Shift |   Z   |   Q   |   J   |   K   | TD(X) |   B   |   M   |   W   | TD(V) |  SLSH | Shift |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | Ctrl  | MO(7) |  GUI  |  Alt  | MO(8) | Space | Bcksp | MO(9) |  Left |  Down |   Up  | Right |
+     * `------------------------------------------------------------------------------------------------'
      */
     [1] = LAYOUT_ortho_4x12(
-        LT(5,KC_ESC), KC_SCLN, KC_COMM, KC_DOT, KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_QUOT,
-        KC_TAB,       KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_ENT,
-        KC_LSFT,      KC_Z,    KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_SLSH, KC_RSFT,
-        MO(7),        KC_LGUI, KC_LALT, KC_LCTL, MO(8),   KC_SPC,  KC_BSPC, MO(9),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        TD(TD_GRV_TILDE),     LT(5,KC_SCLN),    KC_COMM, KC_DOT,   KC_P,    KC_Y,          KC_F,    KC_G,    KC_C,    KC_R,            KC_L,    KC_QUOT,
+        KC_TAB,               KC_A,    KC_O,    KC_E,     KC_U,    KC_I,          KC_D,    KC_H,    KC_T,    KC_N,            KC_S,    KC_ENT,
+        TD(TD_SHIFT_CAPS),    KC_Z,    KC_Q,    KC_J,     KC_K,    TD(TD_X_CUT),  KC_B,    KC_M,    KC_W,    TD(TD_V_PASTE),  KC_SLSH, KC_RSFT,
+        KC_LCTL,              MO(7),   KC_LGUI, KC_LALT,  MO(8),   KC_SPC,        KC_BSPC, MO(9),   KC_LEFT, KC_DOWN,         KC_UP,   KC_RGHT
     ),
 
     /*
      * Layer 2: QWERTY Base Layout
-     * ----------------------------------------------------------------------------------------------------
-     * | LT(5,ESC)|    Q   |    W   |    E   |    R   |    T   |    Y   |    U   |    I   |    O   |    P   |  QUOT  |
-     * |   TAB    |    A   |    S   |    D   |    F   |    G   |    H   |    J   |    K   |    L   |  SCLN  |   ENT  |
-     * |   LSFT   |    Z   |    X   |    C   |    V   |    B   |    N   |    M   |  COMM  |   DOT  |  SLSH  |  RSFT  |
-     * |   MO(7)  |  LCTL  |  LALT  |  LGUI  |  MO(3) |    SPC |   BSPC |  MO(4) |  LEFT  |  DOWN  |   UP   |  RGHT  |
-     * ----------------------------------------------------------------------------------------------------
+     * ,------------------------------------------------------------------------------------------------.
+     * | LT5ESC|   Q   |   W   |   E   |   R   |   T   |   Y   |   U   |   I   |   O   |   P   |  QUOT |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |  TAB  |   A   |   S   |   D   |   F   |   G   |   H   |   J   |   K   |   L   |  SCLN |  ENT  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | Shift |   Z   |   X   |   C   |   V   |   B   |   N   |   M   |  COMM |  DOT  |  SLSH | Shift |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | Ctrl  | MO(7) |  GUI  |  Alt  | MO(3) | Space | Bcksp | MO(4) |  Left |  Down |   Up  | Right |
+     * `------------------------------------------------------------------------------------------------'
      */
     [2] = LAYOUT_ortho_4x12(
-        LT(5,KC_ESC), KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
-        KC_TAB,       KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
-        KC_LSFT,      KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-        MO(7),        KC_LCTL, KC_LALT, KC_LGUI, MO(3),   KC_SPC,  KC_BSPC, MO(4),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+        TD(TD_GRV_TILDE),     LT(5,KC_Q),    KC_W,          KC_E,    KC_R,              KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_QUOT,
+        KC_TAB,               KC_A,          KC_S,          KC_D,    KC_F,              KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
+        TD(TD_SHIFT_CAPS),    KC_Z,          TD(TD_X_CUT),  KC_C,    TD(TD_V_PASTE),    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+        KC_LCTL,              MO(7),         KC_LGUI,       KC_LALT, MO(3),             KC_SPC,  KC_BSPC, MO(4),   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
     ),
 
     /*
      * Layer 3: Function & Navigation / Symbols
-     * ----------------------------------------------------------------------------------------------------
-     * |   F12    |   F2   |   F3   |   F4   |  KC_NO |  KC_NO |  KC_NO |  LPRN  |  RPRN  |  KC_NO |  KC_NO | RCS(GRV)|
-     * | LSFT(F12)| LCA(K) | RCS(2) | RCS(F) | LCTL(F)| LCA(F) | LCA(G) |  LBRC  |  RBRC  |  KC_NO |  KC_NO |  KC_NO |
-     * |  TRNS    | LCA(J) | LCA(L) | LCTL(C)| LCTL(V)| LCA(P) | LCA(Y) |  LCBR  |  RCBR  |  KC_NO |  BSLS  |  TRNS  |
-     * |  TRNS    |  TRNS  |  TRNS  |  LGUI  |  TRNS  | RAG(J) | RCS(K) |  MO(6) |  HOME  |  PGDN  |  PGUP  |   END  |
-     * ----------------------------------------------------------------------------------------------------
+     * ,------------------------------------------------------------------------------------------------.
+     * |  F12  |   F2  |   F3  |   F4  | KC_NO | KC_NO | KC_NO |  LPRN |  RPRN | KC_NO | KC_NO |RCS(GRV|
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |SFT(F12| LCA(K)| RCS(2)| RCS(F)|LCT(F) | LCA(F)| LCA(G)|  LBRC |  RBRC | KC_NO | KC_NO | KC_NO |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | LCA(J)| LCA(L)| LCT(C)| LCT(V)| LCA(P)| LCA(Y)|  LCBR |  RCBR | KC_NO |  BSLS | TRNS  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | TRNS  | TRNS  |  GUI  | TRNS  |    RAG(J)     | MO(6) |  Home |  PgDn |  PgUp |  End  |
+     * `------------------------------------------------------------------------------------------------'
      */
     [3] = LAYOUT_ortho_4x12(
-        KC_F12,    KC_F2,   KC_F3,   KC_F4,   KC_NO,   KC_NO,   KC_NO,   KC_LPRN, KC_RPRN, KC_NO,   KC_NO,   RCS(KC_GRV),
-        LSFT(KC_F12),LCA(KC_K),RCS(KC_2),RCS(KC_F),LCTL(KC_F),LCA(KC_F),LCA(KC_G),KC_LBRC,KC_RBRC,KC_NO,KC_NO,KC_NO,
-        KC_TRNS,   LCA(KC_J),LCA(KC_L),LCTL(KC_C),LCTL(KC_V),LCA(KC_P),LCA(KC_Y),KC_LCBR,KC_RCBR,KC_NO,KC_BSLS,KC_TRNS,
-        KC_TRNS,   KC_TRNS, KC_TRNS, KC_LGUI, KC_TRNS, RAG(KC_J),RCS(KC_K),MO(6), KC_HOME, KC_PGDN, KC_PGUP, KC_END
+        KC_F12,       KC_F2,     KC_F3,     KC_F4,      KC_NO,       KC_NO,      KC_NO,      KC_LPRN, KC_RPRN, KC_NO,   KC_NO,   RCS(KC_GRV),
+        LSFT(KC_F12), LCA(KC_K), RCS(KC_2), RCS(KC_F),  LCTL(KC_F),  LCA(KC_F),  LCA(KC_G),  KC_LBRC, KC_RBRC, KC_NO,   KC_NO,   KC_NO,
+        KC_TRNS,      LCA(KC_J), LCA(KC_L), LCTL(KC_C), LCTL(KC_V),  LCA(KC_P),  LCA(KC_Y),  KC_LCBR, KC_RCBR, KC_NO,   KC_BSLS, KC_TRNS,
+        KC_TRNS,      KC_TRNS,   KC_TRNS,   KC_LGUI,    KC_TRNS,     RAG(KC_J),  RCS(KC_K),  MO(6),   KC_HOME, KC_PGDN, KC_PGUP, KC_END
     ),
 
     /*
      * Layer 4: Numbers & Special Characters
-     * ----------------------------------------------------------------------------------------------------
-     * |   GRV    |  EXLM  |   AT   |  HASH  |   DLR  |  PERC  |  CIRC  |  AMPR  |  ASTR  | LCTL(T)| RCS(O) | LCTL(P)|
-     * | LCA(TAB) | LGUI(1)| LGUI(2)| RCS(P9)| RCS(P3)| LGUI(8)| LGUI(9)|  UNDS  |  MINS  |  EQL   |  PLUS  |   F1   |
-     * |   CAPS   | LGUI(3)| LGUI(4)| LGUI(5)| LGUI(6)| LGUI(7)|  RCTL  | LCTL(GRV)| RCS(U)| RCS(M)| RCS(Y) |  TRNS  |
-     * |  TRNS    |  TRNS  |  TRNS  |  TRNS  |  MO(6) |  TRNS  |   DEL  |  TRNS  | RCS(E) | RCS(QUOT)| RCS(D)| LCA(QUOT)|
-     * ----------------------------------------------------------------------------------------------------
+     * ,------------------------------------------------------------------------------------------------.
+     * |  GRV  |  EXLM |   AT  |  HASH |  DLR  |  PERC |  CIRC |  AMPR |  ASTR | LCT(T)| RCS(O)| LCT(P)|
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |LCA(TAB| GUI(1)| GUI(2)| RCS(P9| RCS(P3| GUI(8)| GUI(9)|  UNDS |  MINS |  EQL  |  PLUS |   F1  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |  CAPS | GUI(3)| GUI(4)| GUI(5)| GUI(6)| GUI(7)| RCTL  | LCT(GRV| RCS(U)| RCS(M)| RCS(Y)| TRNS  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | TRNS  | TRNS  | TRNS  | MO(6) |     TRNS      |  Del  | TRNS  | RCS(E)|RCS(QUO| RCS(D)|LCA(QUO|
+     * `------------------------------------------------------------------------------------------------'
      */
     [4] = LAYOUT_ortho_4x12(
-        KC_GRV,    KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, LCTL(KC_T),RCS(KC_O),LCTL(KC_P),
-        LCA(KC_TAB),LGUI(1), LGUI(2), RCS(KC_P9),RCS(KC_P3),LGUI(8),LGUI(9),KC_UNDS, KC_MINS, KC_EQL,  KC_PLUS, KC_F1,
-        KC_CAPS,   LGUI(3), LGUI(4), LGUI(5), LGUI(6), LGUI(7), KC_RCTL, LCTL(KC_GRV),RCS(KC_U),RCS(KC_M),RCS(KC_Y),KC_TRNS,
-        KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, MO(6),   KC_TRNS, KC_DEL,  KC_TRNS, RCS(KC_E),RCS(KC_QUOT),RCS(KC_D),LCA(KC_QUOT)
+        KC_GRV,         KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     KC_PERC,    KC_CIRC,    KC_AMPR,       KC_ASTR,     LCTL(KC_T),   RCS(KC_O),  LCTL(KC_P),
+        LCA(KC_TAB),    LGUI(KC_1), LGUI(KC_2), RCS(KC_P9), RCS(KC_P3), LGUI(KC_8), LGUI(KC_9), KC_UNDS,       KC_MINS,     KC_EQL,       KC_PLUS,    KC_F1,
+        KC_CAPS,        LGUI(KC_3), LGUI(KC_4), LGUI(KC_5), LGUI(KC_6), LGUI(KC_7), KC_RCTL,    LCTL(KC_GRV),  RCS(KC_U),   RCS(KC_M),    RCS(KC_Y),  KC_TRNS,
+        KC_TRNS,        KC_TRNS,    KC_TRNS,    KC_TRNS,    MO(6),      KC_TRNS,    KC_DEL,     KC_TRNS,       RCS(KC_E),   RCS(KC_QUOT), RCS(KC_D),  LCA(KC_QUOT)
     ),
 
     /*
      * Layer 5: Extended Function / Numpad block
-     * ----------------------------------------------------------------------------------------------------
-     * |  TRNS    |   F10  |   F11  |LSFT(F11)|  F5   | RCS(F5)|  KC_NO |   P7   |   P8   |   P9   |  KC_NO |  KC_NO |
-     * |  TRNS    |   F6   |   F7   |   F8   |   F9   |  KC_NO |  KC_NO |   P4   |   P5   |   P6   |  MINS  |  KC_NO |
-     * |  TRNS    |  KC_NO |  KC_NO |  KC_NO |  KC_NO |  KC_NO |  KC_NO |   P1   |   P2   |   P3   |  SLSH  |  KC_NO |
-     * |  TRNS    |  TRNS  |  TRNS  |  TRNS  |  TRNS  |   SPC  |   BSPC |   P0   |  PDOT  |  KC_NO |  KC_NO | NUM    |
-     * ----------------------------------------------------------------------------------------------------
+     * ,------------------------------------------------------------------------------------------------.
+     * | TRNS  |  F10  |  F11  |SFT(F11|   F5  | RCS(F5| KC_NO |   P7  |   P8  |   P9  | KC_NO | KC_NO |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  |   F6  |   F7  |   F8  |   F9  | KC_NO | KC_NO |   P4  |   P5  |   P6  |  MINS | KC_NO |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO |   P1  |   P2  |   P3  |  SLSH | KC_NO |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | TRNS  | TRNS  | TRNS  | TRNS  |      Space    |  BSPC |   P0  |  PDOT | KC_NO | KC_NO |  NUM  |
+     * `------------------------------------------------------------------------------------------------'
      */
     [5] = LAYOUT_ortho_4x12(
-        KC_TRNS,   KC_F10,  KC_F11,  LSFT(KC_F11),KC_F5,RCS(KC_F5),KC_NO,   KC_P7,   KC_P8,   KC_P9,   KC_NO,   KC_NO,
-        KC_TRNS,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_NO,   KC_NO,   KC_P4,   KC_P5,   KC_P6,   KC_MINS, KC_NO,
-        KC_TRNS,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_P1,   KC_P2,   KC_P3,   KC_SLSH, KC_NO,
-        KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_SPC,  KC_BSPC, KC_P0,   KC_PDOT, KC_NO,   KC_NO,   KC_NUM
+        KC_TRNS,   KC_TRNS, KC_F10,  KC_F11,  LSFT(KC_F11),     KC_F5,      RCS(KC_F5), KC_NO,   KC_P7,   KC_P8,   KC_P9,   KC_NO,
+        KC_TRNS,   KC_F6,   KC_F7,   KC_F8,         KC_F9,      KC_NO,      KC_NO,      KC_P4,   KC_P5,   KC_P6,   KC_MINS, KC_NO,
+        KC_TRNS,   KC_NO,   KC_NO,   KC_NO,         KC_NO,      KC_NO,      KC_NO,      KC_P1,   KC_P2,   KC_P3,   KC_SLSH, KC_NO,
+        KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS,       KC_TRNS,    KC_SPC,     KC_BSPC,    KC_P0,   KC_PDOT, KC_NO,   KC_NO,   KC_NUM
     ),
 
-    /*
+    /*$
      * Layer 6: Configuration & RGB / Bootloader
-     * ----------------------------------------------------------------------------------------------------
-     * |  TRNS    | QK_BOOT| DB_TOGG| UG_TOGG| UG_NEXT| UG_HUEU| UG_HUED| UG_SATU| UG_SATD| UG_VALU| UG_VALD|  DEL   |
-     * |  TRNS    |  KC_NO |  KC_NO |  KC_NO |  KC_NO |  KC_NO |  KC_NO |  DF(0) |  DF(1) |  DF(2) |  TRNS  |  TRNS  |
-     * |  TRNS    | RGB_M_P| RGB_M_B| RGB_M_R|RGB_M_SW|RGB_M_SN|RGB_M_K |RGB_M_X | RGB_M_G|  KC_NO |  KC_NO |  TRNS  |
-     * |  TRNS    |  TRNS  |  TRNS  |  TRNS  |  TRNS  |  TRNS  |  TRNS  |  TRNS  |  TRNS  |  TRNS  |  TRNS  |  TRNS  |
-     * ----------------------------------------------------------------------------------------------------
+     * ,------------------------------------------------------------------------------------------------.
+     * | TRNS  | QK_BOT| DB_TOG| UG_TOG| UG_NXT| UG_HUE| UG_HUD| UG_SAT| UG_SAD| UG_VAL| UG_VAD|  Del  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO | DF(0) | DF(1) | DF(2) | TRNS  | TRNS  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | RGB_MP| RGB_MB| RGB_MR|RGB_MSW|RGB_MSN|RGB_MK |RGB_MX | RGB_MG| KC_NO | KC_NO | TRNS  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | TRNS  | TRNS  | TRNS  | TRNS  |     TRNS      | TRNS  | TRNS  | TRNS  | TRNS  | TRNS  |
+     * `------------------------------------------------------------------------------------------------'
      */
     [6] = LAYOUT_ortho_4x12(
         KC_TRNS,   QK_BOOT, DB_TOGG, UG_TOGG, UG_NEXT, UG_HUEU, UG_HUED, UG_SATU, UG_SATD, UG_VALU, UG_VALD, KC_DEL,
@@ -316,28 +280,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
      * Layer 7: Media, Brightness & Mouse Controls
-     * ----------------------------------------------------------------------------------------------------
-     * |  KC_NO   | BRID   | BRIU   |  KC_NO |  KC_NO |  MPRV  |  MPLY  |  MNXT  |  MUTE  |  VOLD  |  VOLU  |  KC_NO |
-     * | LSG(4)   |  KC_NO |  KC_NO |  KC_NO |  KC_NO |  KC_NO |  KC_NO | MS_LEFT| MS_DOWN| MS_UP  | MS_RGHT|  KC_NO |
-     * |  PSCR    | MS_BTN3| MS_BTN2| MS_BTN1|  KC_NO |  KC_NO |  KC_NO |  KC_NO | MS_WHLL| MS_WHLD| MS_WHLU| MS_WHLR|
-     * |  TRNS    | MS_ACL0| MS_ACL1| MS_ACL2|  KC_NO |  KC_NO |  KC_NO |  KC_NO | MS_LEFT| MS_DOWN| MS_UP  | MS_RGHT|
-     * ----------------------------------------------------------------------------------------------------
+     * ,------------------------------------------------------------------------------------------------.
+     * | KC_NO | BRID  | BRIU  | KC_NO | KC_NO |  MPRV |  MPLY |  MNXT |  MUTE |  VOLD |  VOLU | KC_NO |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |LSG(4) | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO | KC_NO |MS_LEFT|MS_DOWN| MS_UP |MS_RGHT| KC_NO |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | PSCR  |MS_BTN3|MS_BTN2|MS_BTN1| KC_NO | KC_NO | KC_NO | KC_NO |MS_WHLL|MS_WHLD|MS_WHLU|MS_WHLR|
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  |MS_ACL0|MS_ACL1|MS_ACL2| KC_NO |     KC_NO     | KC_NO |MS_LEFT|MS_DOWN| MS_UP |MS_RGHT|
+     * `------------------------------------------------------------------------------------------------'
      */
     [7] = LAYOUT_ortho_4x12(
-        KC_NO,     KC_BRID, KC_BRIU, KC_NO,   KC_NO,   KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU, KC_NO,
-        LSG(KC_4), KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, KC_NO,
-        KC_PSCR,   MS_BTN3, MS_BTN2, MS_BTN1, KC_NO,   KC_NO,   KC_NO,   KC_NO,   MS_WHLL, MS_WHLD, MS_WHLU, MS_WHLR,
-        KC_TRNS,   MS_ACL0, MS_ACL1, MS_ACL2, KC_NO,   KC_NO,   KC_NO,   KC_NO,   MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT
+        KC_NO,      KC_BRID,    KC_BRIU,    KC_NO,      KC_NO, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE,  KC_VOLD, KC_VOLU,   KC_NO,
+        LSG(KC_4),  KC_NO,      KC_NO,      KC_NO,      KC_NO, KC_NO,   KC_NO,  KC_NO,  MS_LEFT,    MS_DOWN, MS_UP,     MS_RGHT,
+        KC_PSCR,    KC_NO,      KC_NO,      KC_NO,      KC_NO, KC_NO,   KC_NO,  KC_NO,  MS_BTN1,    MS_BTN2, MS_BTN3,   KC_NO,
+        KC_TRNS,    MS_ACL0,    MS_ACL1,    MS_ACL2,    KC_NO, KC_NO,   KC_NO,  KC_NO,  MS_WHLL,    MS_WHLD, MS_WHLU,   MS_WHLR
     ),
 
     /*
      * Layer 8: Alternate Functions / Secondary Nav
-     * ----------------------------------------------------------------------------------------------------
-     * |   F12    |   F2   |   F3   |   F4   |  KC_NO |  KC_NO |  KC_NO |  LPRN  |  RPRN  |  KC_NO |  KC_NO | RCS(GRV)|
-     * | LSFT(F12)| LCA(K) | RCS(2) | RCS(F) | LGUI(F)| LCA(F) | LCA(G) |  LBRC  |  RBRC  |  KC_NO |  KC_NO |  KC_NO |
-     * |  TRNS    | LCA(J) | LCA(L) | LGUI(C)| LGUI(V)| LCA(P) | LCA(Y) |  LCBR  |  RCBR  |  KC_NO |  BSLS  |  TRNS  |
-     * |  TRNS    |  TRNS  |  TRNS  |  TRNS  |  TRNS  | RAG(J) | RCS(K) |  MO(6) |  HOME  |  PGDN  |  PGUP  |   END  |
-     * ----------------------------------------------------------------------------------------------------
+     * ,------------------------------------------------------------------------------------------------.
+     * |  F12  |   F2  |   F3  |   F4  | KC_NO | KC_NO | KC_NO |  LPRN |  RPRN | KC_NO | KC_NO |RCS(GRV|
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |SFT(F12| LCA(K)| RCS(2)| RCS(F)| GUI(F)| LCA(F)| LCA(G)|  LBRC |  RBRC | KC_NO | KC_NO | KC_NO |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | LCA(J)| LCA(L)| GUI(C)| GUI(V)| LCA(P)| LCA(Y)|  LCBR |  RCBR | KC_NO |  BSLS | TRNS  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | TRNS  | TRNS  | TRNS  | TRNS  |     RAG(J)    | MO(6) |  Home |  PgDn |  PgUp |  End  |
+     * `------------------------------------------------------------------------------------------------'
      */
     [8] = LAYOUT_ortho_4x12(
         KC_F12,    KC_F2,   KC_F3,   KC_F4,   KC_NO,   KC_NO,   KC_NO,   KC_LPRN, KC_RPRN, KC_NO,   KC_NO,   RCS(KC_GRV),
@@ -348,19 +318,47 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
      * Layer 9: Alternate Symbols / Shortcuts
-     * ----------------------------------------------------------------------------------------------------
-     * |   GRV    |  EXLM  |   AT   |  HASH  |   DLR  |  PERC  |  CIRC  |  AMPR  |  ASTR  | LCTL(T)| RCS(O) | LCTL(P)|
-     * | LCA(TAB) | LGUI(1)| LGUI(2)| RCS(P9)| RCS(P3)| LGUI(8)| LGUI(9)|  UNDS  |  MINS  |  EQL   |  PLUS  |   F1   |
-     * |   CAPS   | LGUI(3)| LGUI(4)| LGUI(5)| LGUI(6)| LGUI(7)|  RCTL  | LCTL(GRV)| RCS(U)| RCS(M)| RCS(Y) |  TRNS  |
-     * |  TRNS    |  TRNS  |  TRNS  |  TRNS  |  MO(6) |  TRNS  |   DEL  |  TRNS  | RCS(E) | RCS(QUOT)| RCS(D)| LCA(QUOT)|
-     * ----------------------------------------------------------------------------------------------------
+     * ,------------------------------------------------------------------------------------------------.
+     * |  GRV  |  EXLM |   AT  |  HASH |  DLR  |  PERC |  CIRC |  AMPR |  ASTR | LCT(T)| RCS(O)| LCT(P)|
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |LCA(TAB| GUI(1)| GUI(2)| RCS(P9| RCS(P3| GUI(8)| GUI(9)|  UNDS |  MINS |  EQL  |  PLUS |   F1  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * |  CAPS | GUI(3)| GUI(4)| GUI(5)| GUI(6)| GUI(7)| RCTL  | LCT(GRV| RCS(U)| RCS(M)| RCS(Y)| TRNS  |
+     * |-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------|
+     * | TRNS  | TRNS  | TRNS  | TRNS  | MO(6) |     TRNS      |  Del  | TRNS  | RCS(E)|RCS(QUO| RCS(D)|LCA(QUO|
+     * `-------------------------------------------------------------------------------------------------'
      */
     [9] = LAYOUT_ortho_4x12(
         KC_GRV,    KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, LCTL(KC_T),RCS(KC_O),LCTL(KC_P),
         LCA(KC_TAB),LGUI(1), LGUI(2), RCS(KC_P9),RCS(KC_P3),LGUI(8),LGUI(9),KC_UNDS, KC_MINS, KC_EQL,  KC_PLUS, KC_F1,
         KC_CAPS,   LGUI(3), LGUI(4), LGUI(5), LGUI(6), LGUI(7), KC_RCTL, LCTL(KC_GRV),RCS(KC_U),RCS(KC_M),RCS(KC_Y),KC_TRNS,
         KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, MO(6),   KC_TRNS, KC_DEL,  KC_TRNS, RCS(KC_E),RCS(KC_QUOT),RCS(KC_D),LCA(KC_QUOT)
+    ),
+    /*
+     * Layer 10: Emoji Layer
+     * ,------------------------------------------------------------------------------------.
+     * | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | 👍   | ❤️  | 😂   | 🔥   | ✅  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | 🎉   | 😊  | 🙏   | 💡   | 💯  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | 👏   | 🚀  | 👀   | 📌   | 🤔  |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | TRNS | 🙋   | 🤝   | ⭐  | 📅   |🤜🤛 |
+     * `------------------------------------------------------------------------------------'
+     */
+    [10] = LAYOUT_ortho_4x12(
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, EMOJI_THUMBSUP,     EMOJI_HEART,      EMOJI_CRY_LAUGH,  EMOJI_FIRE,        EMOJI_CHECK,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, EMOJI_PARTY,        EMOJI_SMILE,      EMOJI_PRAY,       EMOJI_LIGHTBULB,   EMOJI_HUNDRED,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, EMOJI_CLAP,         EMOJI_ROCKET,     EMOJI_EYES,       EMOJI_PUSHPIN,     EMOJI_THINKING,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, EMOJI_RAISE_HANDS,  EMOJI_HANDSHAKE,  EMOJI_STAR,       EMOJI_CALENDAR,    EMOJI_FIST_BUMP
     )
+
+    // [10] = LAYOUT_ortho_4x12(
+    //     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MY_COOL_EMOJI,  UM(1),  UM(2),  UM(3),  UM(4),
+    //     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UM(5),  UM(6),  UM(7),  UM(8),  UM(9),
+    //     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UM(10), UM(11), UM(12), UM(13), UM(14),
+    //     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UM(15), UM(16), UM(17), UM(18), UM(19)
+    // )
 };
 
 #ifdef OTHER_KEYMAP_C
